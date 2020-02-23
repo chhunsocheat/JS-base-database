@@ -24,12 +24,14 @@ class UsersRepository {
   }
 
   async create(attrs) {
-    attrs.id = this.randomId();
+    attrs.id = this.randomId(); //generate random ID 4 byte
 
     const records = await this.getAll();
     records.push(attrs);
 
     await this.writeAll(records);
+
+    return attrs;
   }
 
   async writeAll(records) {
@@ -40,7 +42,7 @@ class UsersRepository {
   }
 
   randomId() {
-    return crypto.randomBytes(4).toString('hex');
+    return crypto.randomBytes(4).toString('hex'); //generate id using crypto
   }
 
   async getOne(id) {
