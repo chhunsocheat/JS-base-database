@@ -1,5 +1,8 @@
 const fs = require('fs');
 const crypto = require('crypto');
+const util = require('util');
+
+const scrypt = util.promisify(crypto.scrypt);
 
 class UsersRepository {
   constructor(filename) {
@@ -24,14 +27,30 @@ class UsersRepository {
   }
 
   async create(attrs) {
-    attrs.id = this.randomId(); //generate random ID 4 byte
+    attrs.id = this.randomId();
+
+    const salt = crypto.randomBytes(8).toString('hex');
+    const buf = await scrypt(attrs.password, salt, 64);
 
     const records = await this.getAll();
-    records.push(attrs);
+    const record = {
+      ...attrs,
+      password: `${buf.toString('hex')}.${salt}`
+    };
+    records.push(record);
 
     await this.writeAll(records);
 
-    return attrs;
+    return record;
+  }
+
+  async comparePasswords(saved, supplied) {
+    // Saved -> password saved in our database. 'hashed.salt'
+    // Supplied -> password given to us by a user trying sign in
+    const [hashed, salt] = saved.split('.');
+    const hashedSupplied = await scrypt(supplied, salt, 64);
+
+    return hashed === hashedSupplied;
   }
 
   async writeAll(records) {
@@ -42,7 +61,7 @@ class UsersRepository {
   }
 
   randomId() {
-    return crypto.randomBytes(4).toString('hex'); //generate id using crypto
+    return crypto.randomBytes(4).toString('hex');
   }
 
   async getOne(id) {
@@ -88,12 +107,3 @@ class UsersRepository {
 }
 
 module.exports = new UsersRepository('users.json');
-
-
-// const createUser = async () =>{
-//     await user.create({
-//       email:"chhunsocheat@gmail.com",
-//       password:"1234"
-//     })
-//   }
-//   createUser();
