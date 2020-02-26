@@ -1,6 +1,6 @@
 const usersRepo = require('../../user.js');
 const express=require('express')
-const {check}=require('express-validator')
+const {check,validationResult}=require('express-validator')
 
 const signupTemplate = require('../../views/admin/auth/signup')
 const signinTemplate = require('../../views/admin/auth/signin')
@@ -10,21 +10,11 @@ router.get('/signup', (req, res) => {
     res.send(signupTemplate({req}));
   });
   
-  router.post('/signup',[
-    check('email').isEmail(),
-    check("password").isLength({min:5}),
-    check("passwordConfirmation")
-  ], async (req, res) => {
+  router.post('/signup',[], async (req, res) => {
+    const errors=validationResult(req)
+    console.log(errors);
+
     const { email, password, passwordConfirmation } = req.body;
-    
-    const existingUser = await usersRepo.getOneBy({ email });
-    if (existingUser) {
-      return res.send('Email in use');
-    }
-  
-    if (password !== passwordConfirmation) {
-      return res.send('Passwords must match');
-    }
   
     // Create a user in our user repo to represent this person
     const user = await usersRepo.create({ email, password });
