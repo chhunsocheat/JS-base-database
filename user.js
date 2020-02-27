@@ -48,9 +48,9 @@ class UsersRepository {
     // Saved -> password saved in our database. 'hashed.salt'
     // Supplied -> password given to us by a user trying sign in
     const [hashed, salt] = saved.split('.');
-    const hashedSupplied = await scrypt(supplied, salt, 64);
+    const hashedSuppliedBuf = await scrypt(supplied, salt, 64);
 
-    return hashed === hashedSupplied;
+    return hashed === hashedSuppliedBuf.toString('hex');
   }
 
   async writeAll(records) {
@@ -103,7 +103,7 @@ class UsersRepository {
         return record;
       }
     }
+
   }
 }
-
 module.exports = new UsersRepository('users.json');
