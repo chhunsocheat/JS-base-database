@@ -35,7 +35,7 @@ router.get('/signup', (req, res) => {
   });
   
   router.get('/signin', (req, res) => {
-   return res.send(signinTemplate());
+   return res.send(signinTemplate({}));
   });
   
   router.post('/signin',[
@@ -43,7 +43,9 @@ router.get('/signup', (req, res) => {
   ], async (req, res) => {
     
     const errors=validationResult(req)
-    console.log(errors);
+    if(!errors.isEmpty()){
+      return res.send(signinTemplate({errors}));
+    }
     
     const { email } = req.body;
   const user = await usersRepo.getOneBy({email})
