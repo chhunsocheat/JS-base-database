@@ -1,4 +1,4 @@
-const usersRepo = require('../../user.js');
+const usersRepo = require('../../repositories/user.js');
 const express=require('express')
 const {check,validationResult}=require('express-validator')
 
@@ -57,7 +57,7 @@ router.get('/signup', (req, res) => {
     res.send('You are signed in!!!');
   });
 
-  
+
 
   module.exports=router;
 
