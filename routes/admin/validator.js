@@ -2,7 +2,14 @@ const {check}=require('express-validator')
 const usersRepo=require("../../repositories/user")
 
 module.exports={
-    requireEmail:
+  requireTitle:check('title')
+  .trim()
+  .isLength({min:5,max:40}),
+  requirePrice:check('price')
+  .trim()
+  .toFloat()
+  .isFloat({min:1})
+  ,requireEmail:
     check('email')
     .trim()
     .isEmail()
