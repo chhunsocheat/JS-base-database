@@ -4,11 +4,13 @@ const usersRepo=require("../../repositories/user")
 module.exports={
   requireTitle:check('title')
   .trim()
-  .isLength({min:5,max:40}),
+  .isLength({min:5,max:40})
+  .withMessage("Title must be 5 letters long"),
   requirePrice:check('price')
   .trim()
   .toFloat()
   .isFloat({min:1})
+  .withMessage("Price is required")
   ,requireEmail:
     check('email')
     .trim()
