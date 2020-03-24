@@ -18,10 +18,17 @@ router.get("/admin/products/new",(req,res)=>{
 res.send(productsNewTemplate({}))
 
 })
-router.post("/admin/products/new",[requireTitle,requirePrice],upload.single('image'),(req,res)=>{
-   const errors=validationResult(req)
-   console.log(req.file);
-   
+router.post("/admin/products/new",[requireTitle,requirePrice],upload.single('image'),async (req,res)=>{
+   const errors=validationResult(req);
+
+   if(!errors.isEmpty()){
+       return res.send(productsNewTemplate({errors}));
+   }
+   const image=req.file.buffer.toString("base64");
+   const {title,price}=req.body;
+   await productsRepo.create({
+    title,price,image
+   })
     res.send("Success")
 
 })
