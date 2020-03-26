@@ -5,6 +5,7 @@ const {handleErrors,signInValidation}=require("./middleware")
 const productTemplate=require("../../views/admin/product/index")
 const productsRepo=require('../../repositories/product')
 const productsNewTemplate=require("../../views/admin/product/new")
+const productsEditTemplate=require("../../views/admin/product/edit")
 const {requireTitle,requirePrice}=require("./validator")
 const router=express.Router();
 const upload=multer({
@@ -39,12 +40,18 @@ router.post("/admin/products/new"
       res.redirect("/admin/products");
   
 })
-// router.get("/admin/product",(req,res)=>{
+router.get("/admin/product/:id/edit",async (req,res)=>{
+console.log(req.param.id);
+const product=await productsRepo.getOne(req.param.id)
+if(!product){
+    return res.send("Product not found")
+}
+res.send(productsEditTemplate({product}))
+})
 
 
-// })
-// router.get("/admin/product",(req,res)=>{
+router.post("/admin/product/:id/edit",signInValidation,async (req,res)=>{
 
 
-// })
+})
 module.exports=router;
