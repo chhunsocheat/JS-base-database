@@ -1,7 +1,7 @@
 const express=require('express')
 const{validationResult}=require('express-validator')
 const multer=require("multer");
-const {handleErrors}=require("./middleware")
+const {handleErrors,signInValidation}=require("./middleware")
 const productTemplate=require("../../views/admin/product/index")
 const productsRepo=require('../../repositories/product')
 const productsNewTemplate=require("../../views/admin/product/new")
@@ -10,15 +10,17 @@ const router=express.Router();
 const upload=multer({
     storage:multer.memoryStorage()
 })
-router.get("/admin/products",async (req,res)=>{
+router.get("/admin/products",signInValidation,async (req,res)=>{
+    
 const products = await productsRepo.getAll();
 res.send(productTemplate({products})); 
 })
-router.get("/admin/products/new",(req,res)=>{
+router.get("/admin/products/new",signInValidation,(req,res)=>{
 res.send(productsNewTemplate({}))
 
 })
 router.post("/admin/products/new"
+,signInValidation
 ,upload.single('image')
 ,[requireTitle,requirePrice]
 ,handleErrors(productsNewTemplate)
@@ -34,7 +36,7 @@ router.post("/admin/products/new"
      await productsRepo.create({
       title,price,image
      })
-      res.send("Success")
+      res.redirect("/admin/products");
   
 })
 // router.get("/admin/product",(req,res)=>{

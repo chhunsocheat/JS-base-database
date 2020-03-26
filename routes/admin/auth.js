@@ -26,12 +26,12 @@ router.get('/signup', (req, res) => {
     // Store the id of that user inside the users cookie
     req.session.userId = user.id;
   
-    res.send('Account created!!!');
+    res.redirect("/admin/products");
   });
   
   router.get('/signout', (req, res) => {
     req.session = null;
-    res.send('You are logged out'); 
+    res.send(`<h1 class='title'>You are sign out</h1>`); 
   });
   
   router.get('/signin', (req, res) => {
@@ -54,7 +54,7 @@ router.get('/signup', (req, res) => {
 
   }
     req.session.userId = user.id;
-    res.send('You are signed in!!!');
+    res.redirect("/admin/products");
   });
 
 

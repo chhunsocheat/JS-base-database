@@ -10,5 +10,11 @@ module.exports={
      }
      next();
         }
+    },
+    signInValidation(req,res,next){
+        if(!req.session.userId){
+            return res.redirect("/signin")
+        }
+        next();
     }
 }
