@@ -8,6 +8,9 @@ const router=express.Router();
 const {requireEmail,requirePassword,requireConfirmation,
   requirePasswordSignIn,requireEmailSignIn}=require('./validator')
 
+  router.get('/', (req, res) => {
+    res.send(signupTemplate({req}));
+  });
 router.get('/signup', (req, res) => {
     res.send(signupTemplate({req}));
   });
