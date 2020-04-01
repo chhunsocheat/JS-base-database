@@ -1,6 +1,7 @@
 const layout =require("../layout")
 
-module.exports=({products})=>{const renderedProducts = products
+module.exports=({products})=>{
+  const renderedProducts = products
     .map(product => {
       return `
       <tr>
@@ -14,8 +15,11 @@ module.exports=({products})=>{const renderedProducts = products
           </a>
         </td>
         <td>
+        <form method="POST" action="/admin/products/${product.id}/delete">
           <button class="button is-danger">Delete</button>
-        </td>
+        </form>
+          </td>
+
       </tr>
     `;
     })

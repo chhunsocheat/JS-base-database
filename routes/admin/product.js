@@ -71,4 +71,8 @@ try{
 }
 res.redirect("/admin/products")
 })
+router.post("/admin/products/:id/delete",signInValidation,async (req,res)=>{
+productsRepo.delete(req.params.id);
+res.redirect("/admin/products")
+})
 module.exports=router;

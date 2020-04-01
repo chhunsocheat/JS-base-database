@@ -5,7 +5,11 @@ body {
   --dark: #2e2532;
   --black: #201a23;
 }
-
+.is-one-quarter:hover{
+  transform: scale(1.05);
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
 .product-card figure {
   text-align: center;
   padding: 5px;
