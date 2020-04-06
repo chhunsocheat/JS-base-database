@@ -4,6 +4,8 @@ const cartsRepo=require("../repositories/cart")
 const productRepo=require("../repositories/product")
 const cartShowTemplate=require("../views/carts/show")
 //receive a post request to add an item to a cart
+
+
 router.post("/cart/products",async(req,res)=>{
 let cart;
 if(!req.session.cartId){
@@ -17,7 +19,7 @@ cart= await cartsRepo.getOne(req.session.cartId)
 
 
 const existingItem=cart.items.find(item=>item.id===req.body.productId)
-
+// create a new cart ID
 if(existingItem){
 existingItem.quantity++;
 }else{
