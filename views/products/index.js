@@ -24,6 +24,44 @@ module.exports = ({ products }) => {
             </footer>
           </div>
         </div>
+        <div class="column is-one-quarter">
+        <div class="card product-card">
+          <figure>
+            <img src="data:image/png;base64, ${product.image}"/>
+          </figure>
+          <div class="card-content">
+            <h3 class="subtitle">${product.title}</h3>
+            <h1 style="font-size:30px">$${product.price}</h1>
+          </div>
+          <footer class="card-footer">
+            <form action="/cart/products" method="POST">
+            <input hidden value="${product.id}" name="productId"/>
+              <button class="button has-icon is-inverted">
+                <i class="fa fa-shopping-cart"></i> Add to cart
+              </button>
+            </form>
+          </footer>
+        </div>
+      </div>
+      <div class="column is-one-quarter">
+      <div class="card product-card">
+        <figure>
+          <img src="data:image/png;base64, ${product.image}"/>
+        </figure>
+        <div class="card-content">
+          <h3 class="subtitle">${product.title}</h3>
+          <h1 style="font-size:30px">$${product.price}</h1>
+        </div>
+        <footer class="card-footer">
+          <form action="/cart/products" method="POST">
+          <input hidden value="${product.id}" name="productId"/>
+            <button class="button has-icon is-inverted">
+              <i class="fa fa-shopping-cart"></i> Add to cart
+            </button>
+          </form>
+        </footer>
+      </div>
+    </div>
       `;
     })
     .join('\n');
